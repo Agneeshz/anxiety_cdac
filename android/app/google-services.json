@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "320594232531",
+    "project_id": "cdac-9f9c9",
+    "storage_bucket": "cdac-9f9c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320594232531:android:12f85ac0d801ca1ecec026",
+        "android_client_info": {
+          "package_name": "com.example.anxiety_cdac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320594232531-vvito5f3onjbbkdapelgjhsrbdj9hage.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVJcgm6_YRw-u5MbIAkBmmY4jJ5Stedbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320594232531-vvito5f3onjbbkdapelgjhsrbdj9hage.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
