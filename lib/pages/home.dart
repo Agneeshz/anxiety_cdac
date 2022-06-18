@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   late CameraController _controller; //To control the camera
   late Future<void>
       _initializeControllerFuture; //Future to wait until camera initializes
-  int selectedCamera = 0;
+  int selectedCamera = 1;
   List<File> capturedImages = [];
 
   initializeCamera(int cameraIndex) async {
@@ -68,25 +68,25 @@ class _HomeState extends State<Home> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  onPressed: () {
-                    if (widget.cameras.length > 1) {
-                      setState(() {
-                        selectedCamera = selectedCamera == 0 ? 1 : 0;
-                        initializeCamera(selectedCamera);
-                      });
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('No secondary camera found'),
-                        duration: Duration(seconds: 2),
-                      ));
-                    }
-                  },
-                  icon: const Icon(Icons.switch_camera_rounded,
-                      color: Colors.white),
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     if (widget.cameras.length > 1) {
+                //       setState(() {
+                //         selectedCamera = selectedCamera == 0 ? 1 : 0;
+                //         initializeCamera(selectedCamera);
+                //       });
+                //     } else {
+                //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                //         content: Text('No secondary camera found'),
+                //         duration: Duration(seconds: 2),
+                //       ));
+                //     }
+                //   },
+                //   icon: const Icon(Icons.switch_camera_rounded,
+                //       color: Colors.white),
+                // ),
                 GestureDetector(
                   onTap: () async {
                     await _initializeControllerFuture;
@@ -102,20 +102,6 @@ class _HomeState extends State<Home> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      image: capturedImages.isNotEmpty
-                          ? DecorationImage(
-                              image: FileImage(capturedImages.last),
-                              fit: BoxFit.cover)
-                          : null,
                     ),
                   ),
                 ),
