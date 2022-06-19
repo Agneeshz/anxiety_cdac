@@ -37,6 +37,7 @@ dependencies:
   camera: ^0.9.8+1
   firebase_core: ^1.18.0
   firebase_storage: ^10.2.18
+  youtube_player_flutter: ^8.1.0
 
 dev_dependencies:
   flutter_test:

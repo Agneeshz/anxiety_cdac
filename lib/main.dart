@@ -1,4 +1,5 @@
 import 'package:anxiety_cdac/pages/home.dart';
+import 'package:anxiety_cdac/pages/video.dart';
 
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Face Detection',
-      home: Home(cameras: cameras),
+      // home: Home(cameras: cameras),
+      home: VideoPage(),
     );
   }
 }
