@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:anxiety_cdac/pages/upload.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
   late Future<void>
       _initializeControllerFuture; //Future to wait until camera initializes
   int selectedCamera = 1;
-  List<File> capturedImages = [];
+  File? capturedImages;
 
   initializeCamera(int cameraIndex) async {
     _controller = CameraController(
@@ -93,8 +94,16 @@ class _HomeState extends State<Home> {
                     var xFile = await _controller.takePicture();
                     setState(() {
                       print(xFile.path);
-                      capturedImages.add(File(xFile.path));
+                      capturedImages = (File(xFile.path));
                     });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UploadPage(
+                          imageFile: capturedImages!,
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
                     height: 60,
