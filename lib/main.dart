@@ -1,11 +1,12 @@
 import 'package:anxiety_cdac/pages/home.dart';
 
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //Ensure plugin services
-
+  await Firebase.initializeApp();
   final cameras = await availableCameras(); //Get list of available cameras
 
   runApp(MyApp(cameras: cameras));
