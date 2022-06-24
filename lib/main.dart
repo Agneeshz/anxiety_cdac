@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Face Detection',
-      // home: Home(cameras: cameras),
-      home: VideoPage(),
+      home: Home(cameras: cameras),
+      //home: VideoPage(),
     );
   }
 }

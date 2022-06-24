@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:anxiety_cdac/pages/video.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,12 @@ class _UploadPageState extends State<UploadPage> {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Image uploaded successfully ...!"),
                     ));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VideoPage(),
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
