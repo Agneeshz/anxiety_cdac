@@ -1,4 +1,5 @@
 import 'package:anxiety_cdac/pages/home.dart';
+import 'package:anxiety_cdac/pages/summary.dart';
 import 'package:anxiety_cdac/pages/video.dart';
 
 import 'package:camera/camera.dart';
@@ -22,8 +23,53 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Face Detection',
-      home: Home(cameras: cameras),
+      //home: Home(cameras: cameras),
       //home: VideoPage(),
+      // home: SummaryPage(),
+      home: Init(cameras: cameras),
+    );
+  }
+}
+
+class Init extends StatelessWidget {
+  final List<CameraDescription> cameras;
+  const Init({Key? key, required this.cameras}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Home(cameras: cameras)));
+            },
+            child: Container(
+              margin: const EdgeInsets.only(bottom: 60),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.blue,
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                child: Text(
+                  "Take a pic",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
