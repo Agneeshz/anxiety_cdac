@@ -9,9 +9,9 @@ class HttpProvider {
     final encoding = Encoding.getByName('utf-8');
 
     String jsonBody = json.encode(body);
-    final spellCheckResponse = await http.post(uri,
+    final response = await http.post(uri,
         headers: headers, body: jsonBody, encoding: encoding);
 
-    return spellCheckResponse.body;
+    return response.body;
   }
 }
