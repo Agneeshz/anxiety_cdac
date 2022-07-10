@@ -1,10 +1,12 @@
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
+import 'package:anxiety_cdac/pages/playaudio.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:record_mp3/record_mp3.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:just_audio/just_audio.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 class AudioPage extends StatefulWidget {
   const AudioPage({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _AudioPageState extends State<AudioPage> {
   String statusText = "";
   bool isComplete = false;
 
+  final player = AudioPlayer();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -114,12 +117,12 @@ class _AudioPageState extends State<AudioPage> {
   }
 
   Future<bool> checkPermission() async {
-    if (!await Permission.microphone.isGranted) {
-      PermissionStatus status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-        return false;
-      }
-    }
+    // if (!await Permission.microphone.isGranted) {
+    //   PermissionStatus status = await Permission.microphone.request();
+    //   if (status != PermissionStatus.granted) {
+    //     return false;
+    //   }
+    // }
     return true;
   }
 
@@ -158,7 +161,7 @@ class _AudioPageState extends State<AudioPage> {
   void stopRecord() {
     bool s = RecordMp3.instance.stop();
     if (s) {
-      statusText = "Record complete";
+      statusText = "Record completed";
       isComplete = true;
       setState(() {});
     }
@@ -174,12 +177,23 @@ class _AudioPageState extends State<AudioPage> {
 
   late String recordFilePath;
 
-  void play() {
-    if (File(recordFilePath).existsSync()) {
-      Source source = recordFilePath as Source;
-      AudioPlayer audioPlayer = AudioPlayer();
-      audioPlayer.play(source);
-    }
+  void play() async {
+    // if (File(recordFilePath).existsSync()) {
+    //   // AudioPlayer audioPlayer = AudioPlayer();
+    //   // audioPlayer.play(recordFilePath, true);
+    //   final duration = await player.setUrl(recordFilePath);
+    //   player.play();
+    // }
+    var duration = await player.setUrl(recordFilePath);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AudioPlayPage(
+          path: recordFilePath,
+          Dur: duration,
+        ),
+      ),
+    );
   }
 
   int i = 0;

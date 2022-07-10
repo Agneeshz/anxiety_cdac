@@ -1,4 +1,6 @@
+import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/pages/home.dart';
+import 'package:anxiety_cdac/pages/playaudio.dart';
 import 'package:anxiety_cdac/pages/summary.dart';
 import 'package:anxiety_cdac/pages/video.dart';
 
@@ -21,12 +23,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Face Detection',
       //home: Home(cameras: cameras),
       //home: VideoPage(),
-      // home: SummaryPage(),
-      home: Init(cameras: cameras),
+      //home: SummaryPage(),
+      //home: Init(cameras: cameras),
+      home: AudioPage(),
     );
   }
 }

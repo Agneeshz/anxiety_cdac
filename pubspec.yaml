@@ -40,10 +40,12 @@ dependencies:
   youtube_player_flutter: ^8.1.0
   http: ^0.13.4
   firebase_ml_vision: ^0.9.10
-  audioplayers: ^1.0.1
+  # audioplayers: ^1.0.1
   path_provider: ^2.0.11
   record_mp3: ^3.0.0
-  permission_handler: ^10.0.0
+  just_audio: ^0.9.27
+  circular_countdown_timer: ^0.2.2
+  # permission_handler: ^10.0.0
 
 dev_dependencies:
   flutter_test:
