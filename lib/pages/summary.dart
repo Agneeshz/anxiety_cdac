@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:anxiety_cdac/constant/endpoints.dart';
+import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/services/http_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SummaryPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class SummaryPage extends StatefulWidget {
 }
 
 class _SummaryPageState extends State<SummaryPage> {
+  bool isLoading = false;
   int count = 0;
   int lenght = 0;
   int seconds = 0;
@@ -22,11 +25,35 @@ class _SummaryPageState extends State<SummaryPage> {
 
   void submit() async {
     HttpProvider httpProvider = HttpProvider();
-    httpProvider
-        .post(spellCheck, {"summary": summary}).then((value) => print(value));
+    try {
+      isLoading = true;
+      await httpProvider.post(spellCheck, {"summary": summary}).then((value) {
+        print(value);
+        FirebaseFirestore.instance.collection('data').add(value);
+      });
 
-    httpProvider.post(typeSpeed, {"summary": summary, "time": seconds}).then(
-        (value) => print(value));
+      await httpProvider
+          .post(typeSpeed, {"summary": summary, "time": seconds}).then((value) {
+        print(value);
+        FirebaseFirestore.instance.collection('data').add(value);
+      });
+      isLoading = false;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const AudioPage(),
+        ),
+      );
+    } catch (e) {
+      isLoading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              "no or multiple faces detected, please try again ....! error "),
+        ),
+      );
+    }
   }
 
   void startTimer() {
@@ -113,7 +140,7 @@ class _SummaryPageState extends State<SummaryPage> {
                     vertical: 10,
                   ),
                   child: Text(
-                    "Upload Image",
+                    "Submit",
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,

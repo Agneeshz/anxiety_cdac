@@ -45,6 +45,7 @@ dependencies:
   record_mp3: ^3.0.0
   just_audio: ^0.9.27
   circular_countdown_timer: ^0.2.2
+  cloud_firestore: ^3.2.1
   # permission_handler: ^10.0.0
 
 dev_dependencies:
