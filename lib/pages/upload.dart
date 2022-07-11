@@ -51,7 +51,7 @@ class _UploadPageState extends State<UploadPage> {
                 GestureDetector(
                   onTap: () async {
                     final fileName = File(widget.imageFile.path);
-                    final destination = 'images/$fileName';
+                    const destination = 'images/test';
 
                     setState(() {
                       isLoading = true;
