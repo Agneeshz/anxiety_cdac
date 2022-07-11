@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //Ensure plugin services
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   final cameras = await availableCameras(); //Get list of available cameras
 
   runApp(MyApp(cameras: cameras));
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Face Detection',
       //home: Home(cameras: cameras),
-      //home: VideoPage(),
+      // home: VideoPage(),
       home: Init(
         cameras: cameras,
       ),

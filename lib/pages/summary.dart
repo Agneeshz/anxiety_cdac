@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:anxiety_cdac/constant/endpoints.dart';
 import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/services/http_provider.dart';
@@ -29,13 +29,13 @@ class _SummaryPageState extends State<SummaryPage> {
       isLoading = true;
       await httpProvider.post(spellCheck, {"summary": summary}).then((value) {
         print(value);
-        FirebaseFirestore.instance.collection('data').add(value);
+        FirebaseFirestore.instance.collection('data').add(jsonDecode(value));
       });
 
       await httpProvider
           .post(typeSpeed, {"summary": summary, "time": seconds}).then((value) {
         print(value);
-        FirebaseFirestore.instance.collection('data').add(value);
+        FirebaseFirestore.instance.collection('data').add(jsonDecode(value));
       });
       isLoading = false;
 
@@ -47,10 +47,10 @@ class _SummaryPageState extends State<SummaryPage> {
       );
     } catch (e) {
       isLoading = false;
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-              "no or multiple faces detected, please try again ....! error "),
+          content: Text("Oops please try again ....!"),
         ),
       );
     }
