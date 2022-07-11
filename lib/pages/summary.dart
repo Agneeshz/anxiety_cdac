@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:anxiety_cdac/constant/endpoints.dart';
-import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/services/http_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -28,8 +27,6 @@ class _SummaryPageState extends State<SummaryPage> {
 
     httpProvider.post(typeSpeed, {"summary": summary, "time": seconds}).then(
         (value) => print(value));
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => AudioPage()));
   }
 
   void startTimer() {
