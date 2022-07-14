@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:record_mp3/record_mp3.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:flutter_fft/flutter_fft.dart';
 // import 'package:permission_handler/permission_handler.dart';
 
 class AudioPage extends StatefulWidget {
@@ -18,6 +19,62 @@ class AudioPage extends StatefulWidget {
 class _AudioPageState extends State<AudioPage> {
   String statusText = "";
   bool isComplete = false;
+  double? frequency;
+  String? note;
+  int? octave;
+  bool? isRecording;
+
+  FlutterFft flutterFft = new FlutterFft();
+
+  _initialize() async {
+    print("Starting recorder...");
+    print("Before");
+    bool hasPermission = await flutterFft.checkPermission();
+    print("After: " + hasPermission.toString());
+
+    // Keep asking for mic permission until accepted
+    while (!(await flutterFft.checkPermission())) {
+      flutterFft.requestPermission();
+      // IF DENY QUIT PROGRAM
+    }
+    // await flutterFft.checkPermissions();
+    await flutterFft.startRecorder();
+    print("Recorder started...");
+    setState(() => isRecording = flutterFft.getIsRecording);
+
+    print(frequency);
+
+    flutterFft.onRecorderStateChanged.listen(
+        (data) => {
+              print("Changed state, received: $data"),
+              setState(
+                () => {
+                  frequency = data[1] as double,
+                  note = data[2] as String,
+                  octave = data[5] as int,
+                },
+              ),
+              flutterFft.setNote = note!,
+              flutterFft.setFrequency = frequency!,
+              flutterFft.setOctave = octave!,
+              print("Octave: ${octave!.toString()}"),
+              print(frequency)
+            },
+        onError: (err) {
+          print("Error: $err");
+        },
+        onDone: () => {print("Isdone")});
+  }
+
+  @override
+  void initState() {
+    isRecording = flutterFft.getIsRecording;
+    frequency = flutterFft.getFrequency;
+    note = flutterFft.getNote;
+    octave = flutterFft.getOctave;
+    super.initState();
+    _initialize();
+  }
 
   final player = AudioPlayer();
   @override
@@ -129,6 +186,7 @@ class _AudioPageState extends State<AudioPage> {
   void startRecord() async {
     bool hasPermission = await checkPermission();
     if (hasPermission) {
+      await flutterFft.startRecorder();
       statusText = "Recording...";
       recordFilePath = await getFilePath();
       isComplete = false;
@@ -158,12 +216,14 @@ class _AudioPageState extends State<AudioPage> {
     }
   }
 
-  void stopRecord() {
+  void stopRecord() async {
     bool s = RecordMp3.instance.stop();
+    await flutterFft.stopRecorder();
     if (s) {
       statusText = "Record completed";
       isComplete = true;
       setState(() {});
+      print(frequency);
     }
   }
 
