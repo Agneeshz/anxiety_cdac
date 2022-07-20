@@ -47,6 +47,7 @@ dependencies:
   circular_countdown_timer: ^0.2.2
   cloud_firestore: ^3.2.1
   flutter_fft: ^1.0.2+6
+  heart_bpm: ^1.1.1+0
   # permission_handler: ^10.0.0
 
 dev_dependencies:

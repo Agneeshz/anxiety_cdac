@@ -3,10 +3,13 @@ import 'package:anxiety_cdac/pages/home.dart';
 import 'package:anxiety_cdac/pages/playaudio.dart';
 import 'package:anxiety_cdac/pages/summary.dart';
 import 'package:anxiety_cdac/pages/video.dart';
-
+import 'package:flutter/material.dart';
+import 'package:heart_bpm/chart.dart';
+import 'package:heart_bpm/heart_bpm.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fft/flutter_fft.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //Ensure plugin services
@@ -15,6 +18,7 @@ void main() async {
 
   runApp(MyApp(cameras: cameras));
 }
+// void main() => runApp(Application());
 
 class MyApp extends StatelessWidget {
   final List<CameraDescription> cameras;
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Face Detection',
-      //home: Home(cameras: cameras),
+      // home: Home(cameras: cameras),
       // home: VideoPage(),
       // home: Init(
       //   cameras: cameras,
