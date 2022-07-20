@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:anxiety_cdac/constant/endpoints.dart';
 import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/services/http_provider.dart';
+import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -96,62 +97,64 @@ class _SummaryPageState extends State<SummaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 15.0,
-            ),
-            const Center(
-              child: Text(
-                "Enter the summary of the previous video",
-                style: TextStyle(fontSize: 18.0),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(18),
-              child: TextFormField(
-                onChanged: (value) => {checkKey(value)},
-                maxLines: null,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4.0),
+    return isLoading
+        ? const LoadingScreen()
+        : Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  const Center(
+                    child: Text(
+                      "Enter the summary of the previous video",
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    child: TextFormField(
+                      onChanged: (value) => {checkKey(value)},
+                      maxLines: null,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4.0),
+                            ),
+                          ),
+                          label: Text("Summary")),
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: (() {
+                      submit();
+                    }),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 60),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.blue,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                    label: Text("Summary")),
+                  ),
+                ],
               ),
             ),
-            const Spacer(),
-            GestureDetector(
-              onTap: (() {
-                submit();
-              }),
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 60),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.blue,
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
