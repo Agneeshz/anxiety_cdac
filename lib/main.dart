@@ -10,6 +10,8 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fft/flutter_fft.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //Ensure plugin services
@@ -39,9 +41,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Init extends StatelessWidget {
+class Init extends StatefulWidget {
   final List<CameraDescription> cameras;
   const Init({Key? key, required this.cameras}) : super(key: key);
+
+  @override
+  State<Init> createState() => _InitState();
+}
+
+class _InitState extends State<Init> {
+  @override
+  Future<void> initState() async {
+    final prefs = await SharedPreferences.getInstance();
+    var uuid = const Uuid();
+    await prefs.setString('uuid', uuid.v1());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +69,7 @@ class Init extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Home(cameras: cameras),
+                  builder: (context) => Home(cameras: widget.cameras),
                 ),
               );
             },

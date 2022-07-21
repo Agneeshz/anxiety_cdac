@@ -6,6 +6,7 @@ import 'package:anxiety_cdac/services/http_provider.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SummaryPage extends StatefulWidget {
   const SummaryPage({Key? key}) : super(key: key);
@@ -25,6 +26,8 @@ class _SummaryPageState extends State<SummaryPage> {
   Timer? countdownTimer;
 
   void submit() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? uuid = prefs.getString('uuid');
     HttpProvider httpProvider = HttpProvider();
     try {
       isLoading = true;
