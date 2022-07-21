@@ -15,7 +15,7 @@ import 'package:uuid/uuid.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //Ensure plugin services
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   final cameras = await availableCameras(); //Get list of available cameras
 
   runApp(MyApp(cameras: cameras));
@@ -29,14 +29,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Face Detection',
       // home: Home(cameras: cameras),
       // home: VideoPage(),
-      // home: Init(
-      //   cameras: cameras,
-      // ),
-      home: AudioPage(),
+      home: Init(
+        cameras: cameras,
+      ),
+      // home: AudioPage(),
     );
   }
 }
@@ -50,12 +50,15 @@ class Init extends StatefulWidget {
 }
 
 class _InitState extends State<Init> {
-  @override
-  Future<void> initState() async {
+  start() async {
     final prefs = await SharedPreferences.getInstance();
     var uuid = const Uuid();
     await prefs.setString('uuid', uuid.v1());
+  }
 
+  @override
+  void initState() {
+    start();
     super.initState();
   }
 

@@ -77,7 +77,7 @@ class _UploadPageState extends State<UploadPage> {
                       isLoading = false;
                     });
                     print('Download-Link: $urlDownload');
-                    FirebaseFirestore.instance.doc('data/$uuid').update(
+                    FirebaseFirestore.instance.doc('data/$uuid').set(
                       {'img-url': urlDownload},
                     );
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

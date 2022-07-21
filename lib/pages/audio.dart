@@ -33,7 +33,7 @@ class _AudioPageState extends State<AudioPage> {
   bool isLoading = false;
 
   @override
-  Future<void> initState() async {
+  initState() {
     super.initState();
   }
 
@@ -242,7 +242,7 @@ class _AudioPageState extends State<AudioPage> {
       isLoading = true;
     });
     await Firebase.initializeApp();
-    var task = FirebaseUpload.uploadFile(destination, File(destination));
+    var task = FirebaseUpload.uploadFile(destination, File(recordFilePath));
     if (task == null) {
       setState(() {
         isLoading = false;
@@ -266,6 +266,12 @@ class _AudioPageState extends State<AudioPage> {
       'max-freq': max,
       'audio-url': urlDownload,
     });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HeartRate(),
+      ),
+    );
   }
 
   int i = 0;
