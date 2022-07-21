@@ -1,6 +1,10 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HeartRate extends StatefulWidget {
   const HeartRate({Key? key}) : super(key: key);
@@ -16,6 +20,17 @@ class _HeartRateState extends State<HeartRate> {
 
   bool isBPMEnabled = false;
   Widget? dialog;
+  String? uuid;
+  start() async {
+    final prefs = await SharedPreferences.getInstance();
+    uuid = prefs.getString('uuid');
+  }
+
+  @override
+  void initState() {
+    start();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

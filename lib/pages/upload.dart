@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:anxiety_cdac/pages/video.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/firebase_upload.dart';
 
@@ -50,8 +52,9 @@ class _UploadPageState extends State<UploadPage> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    final fileName = File(widget.imageFile.path);
-                    const destination = 'images/test';
+                    final prefs = await SharedPreferences.getInstance();
+                    final String? uuid = prefs.getString('uuid');
+                    var destination = 'images/$uuid';
 
                     setState(() {
                       isLoading = true;
@@ -74,6 +77,9 @@ class _UploadPageState extends State<UploadPage> {
                       isLoading = false;
                     });
                     print('Download-Link: $urlDownload');
+                    FirebaseFirestore.instance.doc('data/$uuid').set(
+                      {'img-url': urlDownload},
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Image uploaded successfully ...!"),
                     ));

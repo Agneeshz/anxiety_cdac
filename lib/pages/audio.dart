@@ -1,6 +1,11 @@
+import 'package:anxiety_cdac/widgets/loading.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fft/flutter_fft.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../services/firebase_upload.dart';
 import 'heart_rate.dart';
 
 import 'dart:io';
@@ -22,6 +27,20 @@ class AudioPage extends StatefulWidget {
 class _AudioPageState extends State<AudioPage> {
   String statusText = "";
   bool isComplete = false;
+  bool isRecording = false;
+  double max = 0;
+  double min = 0;
+  bool isLoading = false;
+
+  @override
+  initState() {
+    super.initState();
+  }
+
+  callback(double max, double min) {
+    this.max = max;
+    this.min = min;
+  }
 
   final player = AudioPlayer();
   @override
@@ -31,94 +50,107 @@ class _AudioPageState extends State<AudioPage> {
         appBar: AppBar(
           title: const Center(child: Text('Speak out the summary')),
         ),
-        body: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    child: Container(
-                      height: 48.0,
-                      decoration: BoxDecoration(color: Colors.red.shade300),
-                      child: const Center(
-                        child: Text(
-                          'start',
-                          style: TextStyle(color: Colors.white),
+        body: isLoading
+            ? const LoadingScreen()
+            : Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          child: Container(
+                            height: 48.0,
+                            decoration:
+                                BoxDecoration(color: Colors.red.shade300),
+                            child: const Center(
+                              child: Text(
+                                'start',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          onTap: () async {
+                            startRecord();
+                            setState(() {
+                              isRecording = true;
+                            });
+                          },
                         ),
                       ),
-                    ),
-                    onTap: () async {
-                      startRecord();
-                    },
+                      Expanded(
+                        child: GestureDetector(
+                          child: Container(
+                            height: 48.0,
+                            decoration:
+                                BoxDecoration(color: Colors.blue.shade300),
+                            child: Center(
+                              child: Text(
+                                RecordMp3.instance.status == RecordStatus.PAUSE
+                                    ? 'resume'
+                                    : 'pause',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            pauseRecord();
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          child: Container(
+                            height: 48.0,
+                            decoration:
+                                BoxDecoration(color: Colors.green.shade300),
+                            child: const Center(
+                              child: Text(
+                                'stop',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            stopRecord();
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    child: Container(
-                      height: 48.0,
-                      decoration: BoxDecoration(color: Colors.blue.shade300),
-                      child: Center(
-                        child: Text(
-                          RecordMp3.instance.status == RecordStatus.PAUSE
-                              ? 'resume'
-                              : 'pause',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Text(
+                      statusText,
+                      style: const TextStyle(color: Colors.red, fontSize: 20),
                     ),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      pauseRecord();
+                      play();
                     },
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
                     child: Container(
-                      height: 48.0,
-                      decoration: BoxDecoration(color: Colors.green.shade300),
-                      child: const Center(
-                        child: Text(
-                          'stop',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
+                      margin: const EdgeInsets.only(top: 30),
+                      alignment: AlignmentDirectional.center,
+                      width: 100,
+                      height: 50,
+                      child: isComplete
+                          ? const Text(
+                              "Submit",
+                              style: TextStyle(color: Colors.red, fontSize: 20),
+                            )
+                          : Container(),
                     ),
-                    onTap: () {
-                      stopRecord();
-                    },
                   ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Text(
-                statusText,
-                style: const TextStyle(color: Colors.red, fontSize: 20),
+                  isRecording && !isComplete
+                      ? Application(
+                          isComplete: isComplete,
+                          callback: callback(max, min),
+                        )
+                      : const SizedBox()
+                ],
               ),
-            ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                play();
-              },
-              child: Container(
-                margin: const EdgeInsets.only(top: 30),
-                alignment: AlignmentDirectional.center,
-                width: 100,
-                height: 50,
-                child: isComplete && recordFilePath != null
-                    ? const Text(
-                        "play",
-                        style: TextStyle(color: Colors.red, fontSize: 20),
-                      )
-                    : Container(),
-              ),
-            ),
-            const Application()
-          ],
-        ),
       ),
     );
   }
@@ -169,8 +201,9 @@ class _AudioPageState extends State<AudioPage> {
     bool s = RecordMp3.instance.stop();
     if (s) {
       statusText = "Record completed";
-      isComplete = true;
-      setState(() {});
+      setState(() {
+        isComplete = true;
+      });
     }
   }
 
@@ -191,14 +224,52 @@ class _AudioPageState extends State<AudioPage> {
     //   final duration = await player.setUrl(recordFilePath);
     //   player.play();
     // }
-    var duration = await player.setUrl(recordFilePath);
+    // var duration = await player.setUrl(recordFilePath);
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => AudioPlayPage(
+    //       path: recordFilePath,
+    //       Dur: duration,
+    //     ),
+    //   ),
+    // );
+    final prefs = await SharedPreferences.getInstance();
+    final String? uuid = prefs.getString('uuid');
+    var destination = 'Audio/$uuid';
+
+    setState(() {
+      isLoading = true;
+    });
+    await Firebase.initializeApp();
+    var task = FirebaseUpload.uploadFile(destination, File(recordFilePath));
+    if (task == null) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("ops something went wrong ...!"),
+      ));
+      return;
+    }
+    final snapshot = await task.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    setState(() {
+      isLoading = false;
+    });
+    print('Download-Link: $urlDownload');
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Submitted successfully ...!"),
+    ));
+    FirebaseFirestore.instance.doc('data/$uuid').update({
+      'min-freq': min,
+      'max-freq': max,
+      'audio-url': urlDownload,
+    });
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AudioPlayPage(
-          path: recordFilePath,
-          Dur: duration,
-        ),
+        builder: (context) => const HeartRate(),
       ),
     );
   }
@@ -217,8 +288,10 @@ class _AudioPageState extends State<AudioPage> {
 }
 
 class Application extends StatefulWidget {
-  const Application({Key? key}) : super(key: key);
-
+  Application({Key? key, required this.isComplete, required this.callback})
+      : super(key: key);
+  bool isComplete;
+  Function callback;
   @override
   ApplicationState createState() => ApplicationState();
 }
@@ -228,8 +301,10 @@ class ApplicationState extends State<Application> {
   String? note;
   int? octave;
   bool? isRecording;
+  double min = 0;
+  double max = 0;
 
-  FlutterFft flutterFft = new FlutterFft();
+  FlutterFft flutterFft = FlutterFft();
 
   _initialize() async {
     print("Starting recorder...");
@@ -261,6 +336,9 @@ class ApplicationState extends State<Application> {
               flutterFft.setNote = note!,
               flutterFft.setFrequency = frequency!,
               flutterFft.setOctave = octave!,
+              if (frequency != 0 && frequency! < min) {min = frequency!},
+              if (frequency! > max) {max = frequency!},
+              widget.callback(max, min),
               print("Octave: ${octave!.toString()}")
             },
         onError: (err) {
@@ -293,20 +371,20 @@ class ApplicationState extends State<Application> {
               ? Text("Current frequency: ${frequency!.toStringAsFixed(2)}",
                   style: const TextStyle(fontSize: 30))
               : const Text("Not Recording", style: TextStyle(fontSize: 35)),
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HeartRate(),
-                ),
-              );
-            },
-            child: const Text('Next Page'),
-          )
+          // TextButton(
+          //   style: ButtonStyle(
+          //     foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const HeartRate(),
+          //       ),
+          //     );
+          //   },
+          //   child: const Text('Next Page'),
+          // )
         ],
       ),
     );
