@@ -33,13 +33,13 @@ class _SummaryPageState extends State<SummaryPage> {
       isLoading = true;
       await httpProvider.post(spellCheck, {"summary": summary}).then((value) {
         print(value);
-        FirebaseFirestore.instance.collection('data').add(jsonDecode(value));
+        FirebaseFirestore.instance.doc('data/$uuid').update(jsonDecode(value));
       });
 
       await httpProvider
           .post(typeSpeed, {"summary": summary, "time": seconds}).then((value) {
         print(value);
-        FirebaseFirestore.instance.collection('data').add(jsonDecode(value));
+        FirebaseFirestore.instance.doc('data/$uuid').update(jsonDecode(value));
       });
       isLoading = false;
 
