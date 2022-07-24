@@ -1,7 +1,6 @@
 import 'package:anxiety_cdac/pages/exit.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
@@ -32,18 +31,22 @@ class _HeartRateState extends State<HeartRate> {
   }
 
   submit() async {
+    List<double> value = [];
+    for (var element in bpmValues) {
+      value.add(element.value as double);
+    }
     final prefs = await SharedPreferences.getInstance();
     uuid = prefs.getString('uuid');
 
     setState(() {
       isLoading = true;
     });
-    await Firebase.initializeApp();
-
+    // await Firebase.initializeApp();
+    print("working");
     FirebaseFirestore.instance.doc('data/$uuid').update({
-      'min-bpm': quiver.min(bpmValues)!,
-      'max-bpm': quiver.max(bpmValues)!,
-      'bmp': bpmValues,
+      'min-bpm': quiver.min(value)!.toStringAsFixed(2),
+      'max-bpm': quiver.max(value)!.toStringAsFixed(2),
+      'bmp': value,
     });
     Navigator.push(
       context,
@@ -51,6 +54,9 @@ class _HeartRateState extends State<HeartRate> {
         builder: (context) => const ExitPage(),
       ),
     );
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -71,19 +77,12 @@ class _HeartRateState extends State<HeartRate> {
                             if (data.length >= 100) data.removeAt(0);
                             data.add(value);
                           });
-                          // chart = BPMChart(data);
                         },
                         onBPM: (value) => setState(() {
                           if (bpmValues.length >= 100) bpmValues.removeAt(0);
                           bpmValues.add(SensorValue(
                               value: value.toDouble(), time: DateTime.now()));
                         }),
-                        // sampleDelay: 1000 ~/ 20,
-                        // child: Container(
-                        //   height: 50,
-                        //   width: 100,
-                        //   child: BPMChart(data),
-                        // ),
                       )
                     : const SizedBox(),
                 isBPMEnabled && data.isNotEmpty
@@ -103,40 +102,31 @@ class _HeartRateState extends State<HeartRate> {
                 Center(
                   child: ElevatedButton.icon(
                     icon: const Icon(Icons.favorite_rounded),
-                    label: Text(
-                        isBPMEnabled ? "Submit measurement" : "Measure BPM"),
-                    onPressed: () => setState(() {
-                      if (isBPMEnabled) {
-                        isBPMEnabled = false;
-                        if (iscompleted) {
-                          submit();
+                    label:
+                        Text(isBPMEnabled ? "Stop measurement" : "Measure BPM"),
+                    onPressed: () => setState(
+                      () {
+                        if (isBPMEnabled) {
+                          isBPMEnabled = false;
+                          // submit();
+                        } else {
+                          isBPMEnabled = true;
                         }
-                        // dialog.
-                      } else {
-                        isBPMEnabled = true;
-                        setState(() {
-                          iscompleted = true;
-                        });
-                      }
-                    }),
+                      },
+                    ),
                   ),
                 ),
-                // TextButton(
-                //   style: ButtonStyle(
-                //     foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                //   ),
-                //   onPressed: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => const MyApp(
-                //           cameras: [],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                //   child: const Text('Back to Home Page'),
-                // )
+                Center(
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.favorite_rounded),
+                    label: const Text("Submit"),
+                    onPressed: () => setState(
+                      () {
+                        submit();
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
     );

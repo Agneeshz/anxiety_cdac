@@ -1,4 +1,5 @@
 import 'package:anxiety_cdac/pages/audio.dart';
+import 'package:anxiety_cdac/pages/heart_rate.dart';
 import 'package:anxiety_cdac/pages/home.dart';
 import 'package:anxiety_cdac/pages/playaudio.dart';
 import 'package:anxiety_cdac/pages/summary.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
       // home: Init(
       //   cameras: cameras,
       // ),
-      home: AudioPage(),
+      // home: AudioPage(),
+      home: HeartRate(),
     );
   }
 }
