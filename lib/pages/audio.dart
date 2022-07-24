@@ -46,113 +46,110 @@ class _AudioPageState extends State<AudioPage> {
   final player = AudioPlayer();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Speak out the summary')),
-        ),
-        body: isLoading
-            ? const LoadingScreen()
-            : Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        child: GestureDetector(
-                          child: Container(
-                            height: 48.0,
-                            decoration:
-                                BoxDecoration(color: Colors.red.shade300),
-                            child: const Center(
-                              child: Text(
-                                'start',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          onTap: () async {
-                            startRecord();
-                            setState(() {
-                              isRecording = true;
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          child: Container(
-                            height: 48.0,
-                            decoration:
-                                BoxDecoration(color: Colors.blue.shade300),
-                            child: Center(
-                              child: Text(
-                                RecordMp3.instance.status == RecordStatus.PAUSE
-                                    ? 'resume'
-                                    : 'pause',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          onTap: () {
-                            pauseRecord();
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          child: Container(
-                            height: 48.0,
-                            decoration:
-                                BoxDecoration(color: Colors.green.shade300),
-                            child: const Center(
-                              child: Text(
-                                'stop',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          onTap: () {
-                            stopRecord();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Text(
-                      statusText,
-                      style: const TextStyle(color: Colors.red, fontSize: 20),
-                    ),
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      play();
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      alignment: AlignmentDirectional.center,
-                      width: 100,
-                      height: 50,
-                      child: isComplete
-                          ? const Text(
-                              "Submit",
-                              style: TextStyle(color: Colors.red, fontSize: 20),
-                            )
-                          : Container(),
-                    ),
-                  ),
-                  isRecording && !isComplete
-                      ? Application(
-                          isComplete: isComplete,
-                          callback: callback,
-                        )
-                      : const SizedBox()
-                ],
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(child: Text('Speak out the summary')),
       ),
+      body: isLoading
+          ? const LoadingScreen()
+          : Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        child: Container(
+                          height: 48.0,
+                          decoration: BoxDecoration(color: Colors.red.shade300),
+                          child: const Center(
+                            child: Text(
+                              'start',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        onTap: () async {
+                          startRecord();
+                          setState(() {
+                            isRecording = true;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        child: Container(
+                          height: 48.0,
+                          decoration:
+                              BoxDecoration(color: Colors.blue.shade300),
+                          child: Center(
+                            child: Text(
+                              RecordMp3.instance.status == RecordStatus.PAUSE
+                                  ? 'resume'
+                                  : 'pause',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          pauseRecord();
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        child: Container(
+                          height: 48.0,
+                          decoration:
+                              BoxDecoration(color: Colors.green.shade300),
+                          child: const Center(
+                            child: Text(
+                              'stop',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          stopRecord();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    statusText,
+                    style: const TextStyle(color: Colors.red, fontSize: 20),
+                  ),
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    play();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    alignment: AlignmentDirectional.center,
+                    width: 100,
+                    height: 50,
+                    child: isComplete
+                        ? const Text(
+                            "Submit",
+                            style: TextStyle(color: Colors.red, fontSize: 20),
+                          )
+                        : Container(),
+                  ),
+                ),
+                isRecording && !isComplete
+                    ? Application(
+                        isComplete: isComplete,
+                        callback: callback,
+                      )
+                    : const SizedBox()
+              ],
+            ),
     );
   }
 
