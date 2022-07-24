@@ -38,7 +38,9 @@ class _AudioPageState extends State<AudioPage> {
   }
 
   callback(List<double> freqRange) {
-    this.freqRange = freqRange;
+    setState(() {
+      this.freqRange.addAll(freqRange);
+    });
   }
 
   final player = AudioPlayer();
@@ -145,7 +147,7 @@ class _AudioPageState extends State<AudioPage> {
                   isRecording && !isComplete
                       ? Application(
                           isComplete: isComplete,
-                          callback: callback(freqRange),
+                          callback: callback,
                         )
                       : const SizedBox()
                 ],
@@ -261,8 +263,9 @@ class _AudioPageState extends State<AudioPage> {
       content: Text("Submitted successfully ...!"),
     ));
     FirebaseFirestore.instance.doc('data/$uuid').update({
-      // 'min-freq': min,
-      // 'max-freq': max,
+      'min-freq': quiver.min(freqRange)!.toStringAsFixed(2),
+      'max-freq': quiver.max(freqRange)!.toStringAsFixed(2),
+      'frequency': freqRange,
       'audio-url': urlDownload,
     });
     Navigator.push(
@@ -330,13 +333,13 @@ class ApplicationState extends State<Application> {
                   frequency = data[1] as double,
                   note = data[2] as String,
                   octave = data[5] as int,
-                  freqRange.add(frequency!)
+                  if (!widget.isComplete) freqRange.add(frequency!),
+                  widget.callback(freqRange),
                 },
               ),
               flutterFft.setNote = note!,
               flutterFft.setFrequency = frequency!,
               flutterFft.setOctave = octave!,
-              widget.callback(freqRange),
               print("Octave: ${octave!.toString()}")
             },
         onError: (err) {
@@ -353,6 +356,12 @@ class ApplicationState extends State<Application> {
     octave = flutterFft.getOctave;
     super.initState();
     _initialize();
+  }
+
+  @override
+  void dispose() {
+    flutterFft.stopRecorder();
+    super.dispose();
   }
 
   @override
