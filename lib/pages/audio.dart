@@ -15,6 +15,7 @@ import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:record_mp3/record_mp3.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:quiver/iterables.dart' as quiver;
 // import 'package:permission_handler/permission_handler.dart';
 
 class AudioPage extends StatefulWidget {
@@ -28,8 +29,7 @@ class _AudioPageState extends State<AudioPage> {
   String statusText = "";
   bool isComplete = false;
   bool isRecording = false;
-  double max = 0;
-  double min = 0;
+  List<double> freqRange = [];
   bool isLoading = false;
 
   @override
@@ -37,9 +37,8 @@ class _AudioPageState extends State<AudioPage> {
     super.initState();
   }
 
-  callback(double max, double min) {
-    this.max = max;
-    this.min = min;
+  callback(List<double> freqRange) {
+    this.freqRange = freqRange;
   }
 
   final player = AudioPlayer();
@@ -146,7 +145,7 @@ class _AudioPageState extends State<AudioPage> {
                   isRecording && !isComplete
                       ? Application(
                           isComplete: isComplete,
-                          callback: callback(max, min),
+                          callback: callback(freqRange),
                         )
                       : const SizedBox()
                 ],
@@ -262,8 +261,8 @@ class _AudioPageState extends State<AudioPage> {
       content: Text("Submitted successfully ...!"),
     ));
     FirebaseFirestore.instance.doc('data/$uuid').update({
-      'min-freq': min,
-      'max-freq': max,
+      // 'min-freq': min,
+      // 'max-freq': max,
       'audio-url': urlDownload,
     });
     Navigator.push(
@@ -301,8 +300,7 @@ class ApplicationState extends State<Application> {
   String? note;
   int? octave;
   bool? isRecording;
-  double min = 0;
-  double max = 0;
+  List<double> freqRange = [];
 
   FlutterFft flutterFft = FlutterFft();
 
@@ -326,19 +324,19 @@ class ApplicationState extends State<Application> {
     flutterFft.onRecorderStateChanged.listen(
         (data) => {
               print("Changed state, received: $data"),
+              print(freqRange.length),
               setState(
                 () => {
                   frequency = data[1] as double,
                   note = data[2] as String,
                   octave = data[5] as int,
+                  freqRange.add(frequency!)
                 },
               ),
               flutterFft.setNote = note!,
               flutterFft.setFrequency = frequency!,
               flutterFft.setOctave = octave!,
-              if (frequency != 0 && frequency! < min) {min = frequency!},
-              if (frequency! > max) {max = frequency!},
-              widget.callback(max, min),
+              widget.callback(freqRange),
               print("Octave: ${octave!.toString()}")
             },
         onError: (err) {
@@ -371,6 +369,11 @@ class ApplicationState extends State<Application> {
               ? Text("Current frequency: ${frequency!.toStringAsFixed(2)}",
                   style: const TextStyle(fontSize: 30))
               : const Text("Not Recording", style: TextStyle(fontSize: 35)),
+          isRecording! && freqRange.isNotEmpty
+              ? Text(
+                  "Frequency range: ${quiver.min(freqRange)!.toStringAsFixed(2)} - ${quiver.max(freqRange)!.toStringAsFixed(2)}",
+                  style: const TextStyle(fontSize: 20))
+              : const Text("Not Recording", style: TextStyle(fontSize: 20)),
           // TextButton(
           //   style: ButtonStyle(
           //     foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
