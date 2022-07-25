@@ -30,15 +30,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Face Detection',
       // home: Home(cameras: cameras),
       // home: VideoPage(),
-      // home: Init(
-      //   cameras: cameras,
-      // ),
+      home: Init(
+        cameras: cameras,
+      ),
       // home: AudioPage(),
-      home: HeartRate(),
+      // home: HeartRate(),
     );
   }
 }
@@ -67,10 +67,16 @@ class _InitState extends State<Init> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Take a selfie'),
+      ),
       body: SafeArea(
         child: Center(
-          child: GestureDetector(
-            onTap: () {
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.camera_alt),
+            label: const Text("Open camera",
+                style: TextStyle(color: Colors.white)),
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -78,26 +84,6 @@ class _InitState extends State<Init> {
                 ),
               );
             },
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 60),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.blue,
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                child: Text(
-                  "Take a pic",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
           ),
         ),
       ),

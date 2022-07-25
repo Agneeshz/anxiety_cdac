@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:anxiety_cdac/pages/exit.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +8,7 @@ import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:quiver/iterables.dart' as quiver;
+import 'package:stats/stats.dart';
 
 class HeartRate extends StatefulWidget {
   const HeartRate({Key? key}) : super(key: key);
@@ -43,10 +46,15 @@ class _HeartRateState extends State<HeartRate> {
     });
     // await Firebase.initializeApp();
     print("working");
+
+    final stats = Stats.fromData(value);
+    print(stats.median.toString());
     FirebaseFirestore.instance.doc('data/$uuid').update({
-      'min-bpm': quiver.min(value)!.toStringAsFixed(2),
-      'max-bpm': quiver.max(value)!.toStringAsFixed(2),
-      'bmp': value,
+      'min-bpm': stats.min.toString(),
+      'max-bpm': stats.max.toString(),
+      'mean-bpm': stats.average.toString(),
+      'avg-bpm': stats.median.toString(),
+      'sd-bpm': stats.standardDeviation.toString(),
     });
     Navigator.push(
       context,
@@ -101,32 +109,34 @@ class _HeartRateState extends State<HeartRate> {
                     : const SizedBox(),
                 Center(
                   child: ElevatedButton.icon(
-                    icon: const Icon(Icons.favorite_rounded),
+                    icon: const Icon(Icons.monitor_heart),
                     label:
                         Text(isBPMEnabled ? "Stop measurement" : "Measure BPM"),
                     onPressed: () => setState(
                       () {
                         if (isBPMEnabled) {
                           isBPMEnabled = false;
-                          // submit();
                         } else {
                           isBPMEnabled = true;
+                          iscompleted = true;
                         }
                       },
                     ),
                   ),
                 ),
-                Center(
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.favorite_rounded),
-                    label: const Text("Submit"),
-                    onPressed: () => setState(
-                      () {
-                        submit();
-                      },
-                    ),
-                  ),
-                ),
+                iscompleted
+                    ? Center(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.navigate_next_outlined),
+                          label: const Text("Submit"),
+                          onPressed: () => setState(
+                            () {
+                              submit();
+                            },
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
               ],
             ),
     );

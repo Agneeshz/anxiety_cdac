@@ -26,7 +26,7 @@ class _UploadPageState extends State<UploadPage> {
         ? const LoadingScreen()
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.transparent,
+              // backgroundColor: Colors.transparent,
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_ios_new_rounded,
@@ -40,7 +40,7 @@ class _UploadPageState extends State<UploadPage> {
             body: Column(
               children: [
                 SizedBox(
-                  height: 300,
+                  height: 400,
                   width: MediaQuery.of(context).size.width,
                   child: Image.file(
                     widget.imageFile,
@@ -81,7 +81,7 @@ class _UploadPageState extends State<UploadPage> {
                       {'img-url': urlDownload},
                     );
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Image uploaded successfully ...!"),
+                      content: Text("Image uploaded successfully !"),
                     ));
                     Navigator.push(
                       context,

@@ -30,7 +30,9 @@ class _SummaryPageState extends State<SummaryPage> {
     final String? uuid = prefs.getString('uuid');
     HttpProvider httpProvider = HttpProvider();
     try {
-      isLoading = true;
+      setState(() {
+        isLoading = true;
+      });
       await httpProvider.post(spellCheck, {"summary": summary}).then((value) {
         print(value);
         FirebaseFirestore.instance.doc('data/$uuid').update(jsonDecode(value));
@@ -41,7 +43,9 @@ class _SummaryPageState extends State<SummaryPage> {
         print(value);
         FirebaseFirestore.instance.doc('data/$uuid').update(jsonDecode(value));
       });
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
 
       Navigator.push(
         context,
@@ -50,7 +54,9 @@ class _SummaryPageState extends State<SummaryPage> {
         ),
       );
     } catch (e) {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -103,17 +109,15 @@ class _SummaryPageState extends State<SummaryPage> {
     return isLoading
         ? const LoadingScreen()
         : Scaffold(
+            appBar: AppBar(
+              title: const Text('Enter the summary of the video'),
+              automaticallyImplyLeading: false,
+            ),
             body: SafeArea(
               child: Column(
                 children: [
                   const SizedBox(
                     height: 15.0,
-                  ),
-                  const Center(
-                    child: Text(
-                      "Enter the summary of the previous video",
-                      style: TextStyle(fontSize: 18.0),
-                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(18),
@@ -126,35 +130,21 @@ class _SummaryPageState extends State<SummaryPage> {
                               Radius.circular(4.0),
                             ),
                           ),
-                          label: Text("Summary")),
+                          label: Text("Type here")),
                     ),
                   ),
                   const Spacer(),
-                  GestureDetector(
-                    onTap: (() {
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.navigate_next_rounded),
+                    label: const Text("Submit",
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
                       submit();
-                    }),
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 60),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blue,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 10,
-                        ),
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    },
                   ),
+                  const SizedBox(
+                    height: 50,
+                  )
                 ],
               ),
             ),
