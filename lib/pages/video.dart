@@ -1,4 +1,5 @@
 import 'package:anxiety_cdac/pages/summary.dart';
+import 'package:anxiety_cdac/pages/videoplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -6,57 +7,61 @@ class VideoPage extends StatelessWidget {
   VideoPage({Key? key}) : super(key: key);
   static String videoId = "enbNUqSZdD8";
 
-  final YoutubePlayerController _controller = YoutubePlayerController(
-    initialVideoId: videoId,
-    flags: const YoutubePlayerFlags(
-      autoPlay: false,
-      mute: false,
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
+      appBar: AppBar(
+        title: const Text('Select any video'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
           child: Column(
             children: [
-              YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-                liveUIColor: Colors.amber,
+              ElevatedButton.icon(
+                icon: const Icon(Icons.play_circle_filled_rounded),
+                label: const Text("Video 1",
+                    style: TextStyle(color: Colors.white)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VideoPlayer(videoId: 'hcEvB1PCTTg'),
+                    ),
+                  );
+                },
               ),
               const SizedBox(
                 height: 20,
               ),
-              GestureDetector(
-                onTap: () {
+              ElevatedButton.icon(
+                icon: const Icon(Icons.play_circle_filled_rounded),
+                label: const Text("Video 2",
+                    style: TextStyle(color: Colors.white)),
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SummaryPage(),
+                      builder: (context) => VideoPlayer(videoId: '-bbFKhb_zgU'),
                     ),
                   );
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blue,
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 10,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.play_circle_filled_rounded),
+                label: const Text("Video 3",
+                    style: TextStyle(color: Colors.white)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VideoPlayer(videoId: '7LRH7DY1QbQ'),
                     ),
-                    child: Text(
-                      "Next",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+                  );
+                },
               ),
             ],
           ),

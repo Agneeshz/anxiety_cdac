@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fft/flutter_fft.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stats/stats.dart';
 
 import '../services/firebase_upload.dart';
 import 'heart_rate.dart';
@@ -49,6 +50,7 @@ class _AudioPageState extends State<AudioPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Speak out the summary')),
+        automaticallyImplyLeading: false,
       ),
       body: isLoading
           ? const LoadingScreen()
@@ -124,23 +126,19 @@ class _AudioPageState extends State<AudioPage> {
                     style: const TextStyle(color: Colors.red, fontSize: 20),
                   ),
                 ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    play();
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    alignment: AlignmentDirectional.center,
-                    width: 100,
-                    height: 50,
-                    child: isComplete
-                        ? const Text(
-                            "Submit",
-                            style: TextStyle(color: Colors.red, fontSize: 20),
-                          )
-                        : Container(),
-                  ),
+                Container(
+                  margin: const EdgeInsets.only(top: 30),
+                  alignment: AlignmentDirectional.center,
+                  child: isComplete
+                      ? ElevatedButton.icon(
+                          icon: const Icon(Icons.navigate_next_rounded),
+                          label: const Text("Submit",
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            play();
+                          },
+                        )
+                      : Container(),
                 ),
                 isRecording && !isComplete
                     ? Application(
@@ -259,10 +257,14 @@ class _AudioPageState extends State<AudioPage> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Submitted successfully ...!"),
     ));
+    final stats = Stats.fromData(freqRange);
+    print(stats.median.toString());
     FirebaseFirestore.instance.doc('data/$uuid').update({
-      'min-freq': quiver.min(freqRange)!.toStringAsFixed(2),
-      'max-freq': quiver.max(freqRange)!.toStringAsFixed(2),
-      'frequency': freqRange,
+      'min-freq': stats.min.toString(),
+      'max-freq': stats.max.toString(),
+      'median-freq': stats.median.toString(),
+      'sd-freq': stats.standardDeviation.toString(),
+      'avg-freq': stats.average.toString(),
       'audio-url': urlDownload,
     });
     Navigator.push(
