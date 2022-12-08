@@ -11,6 +11,7 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fft/flutter_fft.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
@@ -72,18 +73,28 @@ class _InitState extends State<Init> {
       ),
       body: SafeArea(
         child: Center(
-          child: ElevatedButton.icon(
-            icon: const Icon(Icons.camera_alt),
-            label: const Text("Open camera",
-                style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Home(cameras: widget.cameras),
-                ),
-              );
-            },
+          child: Column(
+            children: [
+              Lottie.asset(
+                'assets/lottie/selfie.json',
+                width: 400,
+                height: 400,
+                repeat: true,
+              ),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.camera_alt),
+                label: const Text("Open camera",
+                    style: TextStyle(color: Colors.white)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Home(cameras: widget.cameras),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
