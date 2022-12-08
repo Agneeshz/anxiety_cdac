@@ -95,6 +95,7 @@ class _HomeState extends State<Home> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Spacer(),
                       IconButton(
                         onPressed: () {
                           if (widget.cameras.length > 1) {
@@ -113,6 +114,7 @@ class _HomeState extends State<Home> {
                         icon: const Icon(Icons.switch_camera_rounded,
                             color: Colors.white),
                       ),
+                      Spacer(),
                       GestureDetector(
                         onTap: () async {
                           setState(() {
@@ -150,6 +152,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      Spacer()
                     ],
                   ),
                 ),

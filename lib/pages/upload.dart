@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:anxiety_cdac/constant/color.dart';
 import 'package:anxiety_cdac/pages/video.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constant/constant.dart';
 import '../services/firebase_upload.dart';
 
 // ignore: must_be_immutable
@@ -26,7 +29,7 @@ class _UploadPageState extends State<UploadPage> {
         ? const LoadingScreen()
         : Scaffold(
             appBar: AppBar(
-              // backgroundColor: Colors.transparent,
+              backgroundColor: primaryColor,
               leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_ios_new_rounded,
@@ -49,6 +52,20 @@ class _UploadPageState extends State<UploadPage> {
                 ),
                 const SizedBox(
                   height: 20,
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  child: Text(
+                    "General Instruction:\n$bullet Before proceeding, ensure that your face is clearly visible in the photograph.\n$bullet If the image is blurry, retake it.",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      textStyle: TextStyle(
+                        color: secondaryTextColor,
+                        height: 1.5,
+                      ),
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
                 ),
                 GestureDetector(
                   onTap: () async {
@@ -91,19 +108,20 @@ class _UploadPageState extends State<UploadPage> {
                     );
                   },
                   child: Container(
+                    margin: EdgeInsets.only(top: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.blue,
+                      color: primaryColor,
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 10,
                       ),
                       child: Text(
                         "Upload Image",
-                        style: TextStyle(
-                          fontSize: 18,
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
                           color: Colors.white,
                         ),
                       ),
