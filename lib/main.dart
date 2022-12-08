@@ -38,10 +38,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Face Detection',
       // home: Home(cameras: cameras),
-      // home: VideoPage(),
-      home: Init(
-        cameras: cameras,
-      ),
+      home: VideoPage(),
+      // home: Init(
+      //   cameras: cameras,
+      // ),
       // home: AudioPage(),
       // home: HeartRate(),
     );

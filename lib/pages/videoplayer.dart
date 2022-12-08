@@ -1,6 +1,8 @@
+import 'package:anxiety_cdac/constant/color.dart';
 import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/pages/summary.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoPlayer extends StatefulWidget {
@@ -14,10 +16,12 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Watch the video'),
-      ),
+      backgroundColor: Color.fromARGB(255, 23, 23, 23),
+      // appBar: AppBar(
+      //   title: const Text('Watch the video'),
+      // ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           YoutubePlayer(
             controller: YoutubePlayerController(
@@ -31,11 +35,26 @@ class _VideoPlayerState extends State<VideoPlayer> {
             liveUIColor: Colors.amber,
           ),
           const SizedBox(
-            height: 20,
+            height: 30,
           ),
           ElevatedButton.icon(
-            icon: const Icon(Icons.navigate_next_rounded),
-            label: const Text("Next", style: TextStyle(color: Colors.white)),
+            icon: const Icon(Icons.arrow_forward_ios),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(primaryColor),
+              //round shape
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                ),
+              ),
+            ),
+            label: Text(
+              "Next",
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
             onPressed: () {
               Navigator.push(
                 context,
