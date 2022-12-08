@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:anxiety_cdac/pages/exit.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:quiver/iterables.dart' as quiver;
 import 'package:stats/stats.dart';
 
 class HeartRate extends StatefulWidget {
