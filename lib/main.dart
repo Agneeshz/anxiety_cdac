@@ -1,3 +1,4 @@
+import 'package:anxiety_cdac/constant/color.dart';
 import 'package:anxiety_cdac/pages/audio.dart';
 import 'package:anxiety_cdac/pages/heart_rate.dart';
 import 'package:anxiety_cdac/pages/home.dart';
@@ -5,6 +6,7 @@ import 'package:anxiety_cdac/pages/playaudio.dart';
 import 'package:anxiety_cdac/pages/summary.dart';
 import 'package:anxiety_cdac/pages/video.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'package:camera/camera.dart';
@@ -14,6 +16,8 @@ import 'package:flutter_fft/flutter_fft.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+
+import 'constant/constant.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //Ensure plugin services
@@ -68,9 +72,10 @@ class _InitState extends State<Init> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Take a selfie'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Anxiety Detection CDAC'),
+      //   backgroundColor: primaryColor,
+      // ),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -81,10 +86,46 @@ class _InitState extends State<Init> {
                 height: 400,
                 repeat: true,
               ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Text(
+                  "Facial Analysis",
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    textStyle: TextStyle(
+                        color: primaryTextColor, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                child: Text(
+                  "Take a selfie of yourself. Keep the following points in mind as you proceed:\n$bullet Keep your face visible in the photograph.\n$bullet Make sure there is no other subject present in the picture.\n$bullet Once verified, proceed to the next screen by clicking upload.",
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    textStyle: TextStyle(
+                      color: secondaryTextColor,
+                      height: 1.5,
+                    ),
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
               ElevatedButton.icon(
                 icon: const Icon(Icons.camera_alt),
-                label: const Text("Open camera",
-                    style: TextStyle(color: Colors.white)),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(primaryColor),
+                  //round shape
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                  ),
+                ),
+                label: Text("Open camera",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                    )),
                 onPressed: () {
                   Navigator.push(
                     context,
