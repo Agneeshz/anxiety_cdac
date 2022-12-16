@@ -1,1 +1,1 @@
-const url = "https://cdac-backend-silchar.herokuapp.com/api";
+const url = "https://anxiety-detection-b.onrender.com/api";
