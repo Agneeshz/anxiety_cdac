@@ -55,6 +55,7 @@ class _HeartRateState extends State<HeartRate> {
       'avg-bpm': stats.median.toString(),
       'sd-bpm': stats.standardDeviation.toString(),
     });
+    // ignore: use_build_context_synchronously
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const ExitPage()),

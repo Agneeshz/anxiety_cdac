@@ -136,7 +136,7 @@ class _AudioPageState extends State<AudioPage> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                   child: Text(
-                    "General Instruction:\n$bullet Make a list of everything you discovered in the previous video.\n$bullet Summarize your words. Once finished, click the submit button to move on.",
+                    "General Instruction:\n$bullet Repeat the process as described on the previous page, this time stating the summary.\n$bullet To begin recording, click on the Start button. You can pause and resume recording the audio. \n$bullet Once finished, click the stop button and press the submit button to move on to the next screen.",
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       textStyle: TextStyle(
@@ -335,12 +335,12 @@ class _AudioPageState extends State<AudioPage> {
 
   Future<String> getFilePath() async {
     Directory storageDirectory = await getApplicationDocumentsDirectory();
-    String sdPath = storageDirectory.path + "/record";
+    String sdPath = "${storageDirectory.path}/record";
     var d = Directory(sdPath);
     if (!d.existsSync()) {
       d.createSync(recursive: true);
     }
-    return sdPath + "/test_${i++}.mp3";
+    return "$sdPath/test_${i++}.mp3";
   }
 }
 
