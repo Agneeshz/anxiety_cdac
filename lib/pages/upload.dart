@@ -83,6 +83,7 @@ class _UploadPageState extends State<UploadPage> {
                       setState(() {
                         isLoading = false;
                       });
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("ops something went wrong ...!"),
                       ));
@@ -97,15 +98,15 @@ class _UploadPageState extends State<UploadPage> {
                     FirebaseFirestore.instance.doc('data/$uuid').set(
                       {'img-url': urlDownload},
                     );
+                    // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Image uploaded successfully !"),
                     ));
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => VideoPage(),
-                      ),
-                    );
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => VideoPage()),
+                        (route) => false);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 20),

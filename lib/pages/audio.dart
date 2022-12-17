@@ -296,6 +296,7 @@ class _AudioPageState extends State<AudioPage> {
       setState(() {
         isLoading = false;
       });
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("ops something went wrong ...!"),
       ));
@@ -307,6 +308,7 @@ class _AudioPageState extends State<AudioPage> {
       isLoading = false;
     });
     print('Download-Link: $urlDownload');
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text("Submitted successfully ...!"),
     ));
@@ -320,11 +322,12 @@ class _AudioPageState extends State<AudioPage> {
       'avg-freq': stats.average.toString(),
       'audio-url': urlDownload,
     });
-    Navigator.push(
+
+    // ignore: use_build_context_synchronously
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
-        builder: (context) => const HeartRate(),
-      ),
+      MaterialPageRoute(builder: (context) => HeartRate()),
+      (route) => false,
     );
   }
 

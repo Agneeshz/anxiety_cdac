@@ -51,18 +51,17 @@ class _SummaryPageState extends State<SummaryPage> {
       setState(() {
         isLoading = false;
       });
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const AudioPage(),
-        ),
-      );
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const AudioPage()),
+          (route) => false);
     } catch (e) {
       setState(() {
         isLoading = false;
       });
       print(e);
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Oops please try again ....!"),
@@ -172,11 +171,11 @@ class _SummaryPageState extends State<SummaryPage> {
                             borderSide: BorderSide(
                               color: primaryColor,
                             ),
-                            borderRadius: BorderRadius.all(
+                            borderRadius: const BorderRadius.all(
                               Radius.circular(4.0),
                             ),
                           ),
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(4.0),
                             ),
@@ -191,7 +190,7 @@ class _SummaryPageState extends State<SummaryPage> {
                     height: 30,
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(120, 0, 120, 0),
+                    padding: const EdgeInsets.fromLTRB(120, 0, 120, 0),
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.arrow_forward_ios),
                       style: ButtonStyle(

@@ -55,11 +55,10 @@ class _HeartRateState extends State<HeartRate> {
       'avg-bpm': stats.median.toString(),
       'sd-bpm': stats.standardDeviation.toString(),
     });
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
-        builder: (context) => const ExitPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const ExitPage()),
+      (route) => false,
     );
     setState(() {
       isLoading = false;
