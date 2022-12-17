@@ -1,6 +1,7 @@
 import 'package:anxiety_cdac/constant/color.dart';
 import 'package:anxiety_cdac/pages/heart_rate.dart';
 import 'package:anxiety_cdac/pages/home.dart';
+import 'package:anxiety_cdac/pages/video.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:camera/camera.dart';
@@ -27,10 +28,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Face Detection',
       // home: Home(cameras: cameras),
-      home: HeartRate(),
+      home: VideoPage(),
       // home: Init(
       //   cameras: cameras,
       // ),

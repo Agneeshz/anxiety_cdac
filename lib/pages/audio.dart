@@ -53,16 +53,17 @@ class _AudioPageState extends State<AudioPage> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Center(
-            child: Text(
-          'Speak out the summary',
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            textStyle: GoogleFonts.poppins(
-              color: Colors.white,
-              height: 1.5,
+          child: Text(
+            'Speak out the summary',
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              textStyle: GoogleFonts.poppins(
+                color: Colors.white,
+                height: 1.5,
+              ),
             ),
           ),
-        )),
+        ),
         automaticallyImplyLeading: false,
       ),
       body: isLoading

@@ -1,7 +1,9 @@
+import 'package:anxiety_cdac/constant/color.dart';
 import 'package:anxiety_cdac/pages/exit.dart';
 import 'package:anxiety_cdac/widgets/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:heart_bpm/chart.dart';
 import 'package:heart_bpm/heart_bpm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,7 +70,17 @@ class _HeartRateState extends State<HeartRate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Heart BPM'),
+        backgroundColor: primaryColor,
+        title: Text(
+          'Heart BPM',
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            textStyle: GoogleFonts.poppins(
+              color: Colors.white,
+              height: 1.5,
+            ),
+          ),
+        ),
       ),
       body: isLoading
           ? const LoadingScreen()
@@ -106,9 +118,20 @@ class _HeartRateState extends State<HeartRate> {
                     : const SizedBox(),
                 Center(
                   child: ElevatedButton.icon(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(primaryColor),
+                      //round shape
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                      ),
+                    ),
                     icon: const Icon(Icons.monitor_heart),
-                    label:
-                        Text(isBPMEnabled ? "Stop measurement" : "Measure BPM"),
+                    label: Text(
+                      isBPMEnabled ? "Stop measurement" : "Measure BPM",
+                      style: GoogleFonts.poppins(),
+                    ),
                     onPressed: () => setState(
                       () {
                         if (isBPMEnabled) {
@@ -124,8 +147,22 @@ class _HeartRateState extends State<HeartRate> {
                 iscompleted
                     ? Center(
                         child: ElevatedButton.icon(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(primaryColor),
+                            //round shape
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                            ),
+                          ),
                           icon: const Icon(Icons.navigate_next_outlined),
-                          label: const Text("Submit"),
+                          label: Text(
+                            "Submit",
+                            style: GoogleFonts.poppins(),
+                          ),
                           onPressed: () => setState(
                             () {
                               submit();

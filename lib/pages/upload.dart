@@ -108,13 +108,13 @@ class _UploadPageState extends State<UploadPage> {
                     );
                   },
                   child: Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: primaryColor,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 10,
                       ),
