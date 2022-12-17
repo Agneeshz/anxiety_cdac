@@ -16,7 +16,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 23, 23, 23),
+      backgroundColor: const Color.fromARGB(255, 23, 23, 23),
       // appBar: AppBar(
       //   title: const Text('Watch the video'),
       // ),
@@ -56,12 +56,17 @@ class _VideoPlayerState extends State<VideoPlayer> {
               ),
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SummaryPage(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const SummaryPage(),
+              //   ),
+              // );
+              //navigate to summary page and destroy this screen
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SummaryPage()),
+                  (route) => false);
             },
           ),
         ],

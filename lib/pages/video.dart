@@ -1,9 +1,7 @@
-import 'package:anxiety_cdac/pages/summary.dart';
 import 'package:anxiety_cdac/pages/videoplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../constant/color.dart';
 import '../constant/constant.dart';
@@ -60,7 +58,7 @@ class VideoPage extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.play_arrow),
+                      leading: const Icon(Icons.play_arrow),
                       title: Text(
                         "Video 1",
                         style: GoogleFonts.poppins(
@@ -79,7 +77,7 @@ class VideoPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -92,7 +90,7 @@ class VideoPage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.play_arrow),
+                      leading: const Icon(Icons.play_arrow),
                       title: Text(
                         "Video 2",
                         style: GoogleFonts.poppins(
@@ -111,7 +109,7 @@ class VideoPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -124,7 +122,7 @@ class VideoPage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.play_arrow),
+                      leading: const Icon(Icons.play_arrow),
                       title: Text(
                         "Video 3",
                         style: GoogleFonts.poppins(
@@ -143,7 +141,7 @@ class VideoPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
                         Navigator.push(
                           context,
