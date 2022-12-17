@@ -3,9 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fft/flutter_fft.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stats/stats.dart';
 
+import '../constant/color.dart';
+import '../constant/constant.dart';
 import '../services/firebase_upload.dart';
 import 'heart_rate.dart';
 
@@ -48,7 +51,18 @@ class _AudioPageState extends State<AudioPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Speak out the summary')),
+        backgroundColor: primaryColor,
+        title: Center(
+            child: Text(
+          'Speak out the summary',
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            textStyle: GoogleFonts.poppins(
+              color: Colors.white,
+              height: 1.5,
+            ),
+          ),
+        )),
         automaticallyImplyLeading: false,
       ),
       body: isLoading
@@ -63,10 +77,10 @@ class _AudioPageState extends State<AudioPage> {
                         child: Container(
                           height: 48.0,
                           decoration: BoxDecoration(color: Colors.red.shade300),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               'start',
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.poppins(color: Colors.white),
                             ),
                           ),
                         ),
@@ -89,7 +103,7 @@ class _AudioPageState extends State<AudioPage> {
                               RecordMp3.instance.status == RecordStatus.PAUSE
                                   ? 'resume'
                                   : 'pause',
-                              style: const TextStyle(color: Colors.white),
+                              style: GoogleFonts.poppins(color: Colors.white),
                             ),
                           ),
                         ),
@@ -104,10 +118,10 @@ class _AudioPageState extends State<AudioPage> {
                           height: 48.0,
                           decoration:
                               BoxDecoration(color: Colors.green.shade300),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               'stop',
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.poppins(color: Colors.white),
                             ),
                           ),
                         ),
@@ -117,6 +131,23 @@ class _AudioPageState extends State<AudioPage> {
                       ),
                     ),
                   ],
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: Text(
+                    "General Instruction:\n$bullet Make a list of everything you discovered in the previous video.\n$bullet Summarize your words. Once finished, click the submit button to move on.",
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      textStyle: TextStyle(
+                        color: secondaryTextColor,
+                        height: 1.5,
+                      ),
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15.0,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
@@ -130,9 +161,25 @@ class _AudioPageState extends State<AudioPage> {
                   alignment: AlignmentDirectional.center,
                   child: isComplete
                       ? ElevatedButton.icon(
-                          icon: const Icon(Icons.navigate_next_rounded),
-                          label: const Text("Submit",
-                              style: TextStyle(color: Colors.white)),
+                          icon: const Icon(Icons.arrow_forward_ios),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(primaryColor),
+                            //round shape
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                            ),
+                          ),
+                          label: Text(
+                            "Submit",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
                           onPressed: () {
                             play();
                           },
@@ -181,13 +228,17 @@ class _AudioPageState extends State<AudioPage> {
       bool s = RecordMp3.instance.resume();
       if (s) {
         statusText = "Recording...";
-        setState(() {});
+        setState(() {
+          isRecording = true;
+        });
       }
     } else {
       bool s = RecordMp3.instance.pause();
       if (s) {
         statusText = "Recording pause...";
-        setState(() {});
+        setState(() {
+          isRecording = false;
+        });
       }
     }
   }
@@ -206,7 +257,9 @@ class _AudioPageState extends State<AudioPage> {
     bool s = RecordMp3.instance.resume();
     if (s) {
       statusText = "Recording...";
-      setState(() {});
+      setState(() {
+        isRecording = true;
+      });
     }
   }
 
@@ -370,17 +423,17 @@ class ApplicationState extends State<Application> {
         children: [
           isRecording!
               ? Text("Current note: ${note!},${octave!.toString()}",
-                  style: const TextStyle(fontSize: 30))
-              : const Text("Not Recording", style: TextStyle(fontSize: 35)),
+                  style: GoogleFonts.poppins(fontSize: 25))
+              : Text("Not Recording", style: GoogleFonts.poppins(fontSize: 25)),
           isRecording!
               ? Text("Current frequency: ${frequency!.toStringAsFixed(2)}",
-                  style: const TextStyle(fontSize: 30))
-              : const Text("Not Recording", style: TextStyle(fontSize: 35)),
+                  style: GoogleFonts.poppins(fontSize: 25))
+              : Text("Not Recording", style: GoogleFonts.poppins(fontSize: 25)),
           isRecording! && freqRange.isNotEmpty
               ? Text(
                   "Frequency range: ${quiver.min(freqRange)!.toStringAsFixed(2)} - ${quiver.max(freqRange)!.toStringAsFixed(2)}",
-                  style: const TextStyle(fontSize: 20))
-              : const Text("Not Recording", style: TextStyle(fontSize: 20)),
+                  style: GoogleFonts.poppins(fontSize: 15))
+              : Text("Not Recording", style: GoogleFonts.poppins(fontSize: 15)),
           // TextButton(
           //   style: ButtonStyle(
           //     foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
